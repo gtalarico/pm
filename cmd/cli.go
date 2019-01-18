@@ -19,9 +19,10 @@ func ShowUsage() {
 	// Show usage message and exit
 	fmt.Fprintln(os.Stderr, "usage: pm <command> [<args>]")
 	fmt.Fprintln(os.Stderr, "")
-	fmt.Fprintln(os.Stderr, "  go		Go to Project")
-	fmt.Fprintln(os.Stderr, "  remove	Remove Project")
-	fmt.Fprintln(os.Stderr, "  add 		Add Project")
+	fmt.Fprintln(os.Stderr, "  list		List projects")
+	fmt.Fprintln(os.Stderr, "  go		Go to project")
+	fmt.Fprintln(os.Stderr, "  remove	Remove project")
+	fmt.Fprintln(os.Stderr, "  add 		Add project")
 	os.Exit(1)
 }
 
