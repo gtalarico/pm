@@ -5,9 +5,10 @@ import (
 )
 
 type Command struct {
-	Name    string
-	NumArgs int
-	Run     func([]string, Config)
+	Name     string
+	NumArgs  int
+	UsageMsg string
+	Run      func([]string, Config)
 }
 
 func printProjects(projects []Project) {
@@ -27,8 +28,15 @@ func cmdGo(args []string, config Config) {
 }
 
 func cmdAdd(args []string, config Config) {
-	fmt.Println("Cmd: Add")
-	fmt.Println(args)
+	projectName := args[0]
+	projectPath := args[1]
+	project := Project{
+		Name: projectName,
+		Path: projectPath,
+	}
+	config.Projects = append(config.Projects, project)
+	writeConfig(config)
+	printProjects(config.Projects)
 }
 
 func cmdRemove(args []string, config Config) {
@@ -47,24 +55,28 @@ func cmdRemove(args []string, config Config) {
 
 var Commands = [...]Command{
 	Command{
-		Name:    "list",
-		NumArgs: 0,
-		Run:     cmdList,
+		Name:     "list",
+		NumArgs:  0, // pm list
+		UsageMsg: "list",
+		Run:      cmdList,
 	},
 	Command{
-		Name:    "add",
-		NumArgs: 1,
-		Run:     cmdAdd,
+		Name:     "add",
+		NumArgs:  2, // pm add <name> <path>
+		UsageMsg: "add <project-name> <path>",
+		Run:      cmdAdd,
 	},
 	Command{
-		Name:    "remove",
-		NumArgs: 1,
-		Run:     cmdRemove,
+		Name:     "remove",
+		NumArgs:  1, // pm remove <query>
+		UsageMsg: "remove <project-name>",
+		Run:      cmdRemove,
 	},
 	Command{
-		Name:    "go",
-		NumArgs: 1,
-		Run:     cmdGo,
+		Name:     "go",
+		NumArgs:  1, // pm go <project-name>
+		UsageMsg: "go <project-name>",
+		Run:      cmdGo,
 	},
 }
 

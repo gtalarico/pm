@@ -24,7 +24,7 @@ func configFilepath() string {
 
 func writeConfig(config Config) {
 	path := configFilepath()
-	configJson, _ := json.Marshal(config)
+	configJson, _ := json.MarshalIndent(config, "", " ")
 	writeErr := ioutil.WriteFile(path, configJson, 0644)
 	if writeErr != nil {
 		writeErrMsg := fmt.Sprintf("Could not open config: %s", path)

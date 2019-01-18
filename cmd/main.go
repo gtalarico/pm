@@ -16,7 +16,7 @@ func Run() {
 
 	cmd, posArgs := parseCmd(args)
 	if cmd.NumArgs != len(posArgs) {
-		ShowUsage()
+		ShowCmdUsage(cmd.UsageMsg)
 	}
 
 	cmd.Run(posArgs, config)
