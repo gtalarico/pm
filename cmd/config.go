@@ -18,11 +18,25 @@ type Project struct {
 	Name string `json:"name"`
 }
 
+func configFilepath() string {
+	return userHomePath() + fmt.Sprintf("/%s", CFG_FILENAME)
+}
+
+func writeConfig(config Config) {
+	path := configFilepath()
+	configJson, _ := json.Marshal(config)
+	writeErr := ioutil.WriteFile(path, configJson, 0644)
+	if writeErr != nil {
+		writeErrMsg := fmt.Sprintf("Could not open config: %s", path)
+		Terminate(writeErrMsg)
+	}
+}
+
 func readConfig() Config {
-	configPath := userHomePath() + fmt.Sprintf("/%s", CFG_FILENAME)
-	configBytes, err := ioutil.ReadFile(configPath)
-	if err != nil {
-		Terminate(err.Error())
+	path := configFilepath()
+	configBytes, readErr := ioutil.ReadFile(path)
+	if readErr != nil {
+		Terminate(readErr.Error())
 	}
 
 	var config Config

@@ -10,10 +10,14 @@ type Command struct {
 	Run     func([]string, Config)
 }
 
-func cmdList(args []string, config Config) {
-	for _, project := range config.Projects {
+func printProjects(projects []Project) {
+	for _, project := range projects {
 		fmt.Println(project.Name)
 	}
+}
+
+func cmdList(args []string, config Config) {
+	printProjects(config.Projects)
 }
 
 func cmdGo(args []string, config Config) {
@@ -28,8 +32,17 @@ func cmdAdd(args []string, config Config) {
 }
 
 func cmdRemove(args []string, config Config) {
-	fmt.Println("Cmd: Remove")
-	fmt.Println(args)
+	var projectToKeep []Project
+	projectName := args[0]
+	matchedProject := findProject(projectName, config)
+	for _, project := range config.Projects {
+		if project.Name != matchedProject.Name {
+			projectToKeep = append(projectToKeep, project)
+		}
+	}
+	config.Projects = projectToKeep
+	writeConfig(config)
+	printProjects(projectToKeep)
 }
 
 var Commands = [...]Command{
