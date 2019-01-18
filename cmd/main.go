@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 )
 
@@ -25,7 +24,8 @@ func Run() {
 func InvalidCommand(cmdName string) {
 	errMsg := recover() // recover() retrives error passed by panic
 	if errMsg != nil {
-		Terminate(fmt.Sprintf("%s: %s", errMsg, cmdName))
+		// Terminate(fmt.Sprintf("%s: %s", errMsg, cmdName))
+		ShowUsage()
 	}
 }
 

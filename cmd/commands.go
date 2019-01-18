@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"path/filepath"
 )
 
 type Command struct {
@@ -30,13 +31,21 @@ func cmdGo(args []string, config Config) {
 func cmdAdd(args []string, config Config) {
 	projectName := args[0]
 	projectPath := args[1]
+	absPath, err := filepath.Abs(projectPath)
+	if err != nil {
+		Terminate(err.Error())
+	}
 	project := Project{
 		Name: projectName,
-		Path: projectPath,
+		Path: absPath,
 	}
-	config.Projects = append(config.Projects, project)
+	// TODO: Remove first - requires refactoring findProject
+	// project := findProject(projectName, config)
+
+	newProjects := append(config.Projects, project)
+	config.Projects = newProjects
 	writeConfig(config)
-	printProjects(config.Projects)
+	printProjects(newProjects)
 }
 
 func cmdRemove(args []string, config Config) {

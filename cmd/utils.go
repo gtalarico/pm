@@ -13,7 +13,11 @@ func Terminate(msg string) {
 
 func ShowUsage() {
 	// Show usage message and exit
-	fmt.Fprint(os.Stderr, "Usage: gg <project-name>")
+	fmt.Fprintln(os.Stderr, "usage: pm <command> [<args>]")
+	fmt.Fprintln(os.Stderr, "")
+	fmt.Fprintln(os.Stderr, "  go		Go to Project")
+	fmt.Fprintln(os.Stderr, "  remove	Remove Project")
+	fmt.Fprintln(os.Stderr, "  add 		Add Project")
 	os.Exit(1)
 }
 

@@ -53,5 +53,5 @@ func Shell(cwd string) {
 
 	// os.Setenv("PROMPT", "()")
 	// Keep on keepin' on.
-	fmt.Printf("<< Exited Go Shell\n %s\n", state.String())
+	fmt.Printf("Exited Go Sub Shell\n %s\n", state.String())
 }
