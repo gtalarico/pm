@@ -13,6 +13,6 @@ func Terminate(msg string) {
 
 func ShowUsage() {
 	// Show usage message and exit
-	fmt.Fprint(os.Stderr, "Usage: gp <project-name>")
+	fmt.Fprint(os.Stderr, "Usage: gg <project-name>")
 	os.Exit(1)
 }

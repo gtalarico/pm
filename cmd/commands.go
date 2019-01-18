@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 )
 
 type Command struct {
@@ -19,14 +18,8 @@ func cmdList(args []string, config Config) {
 
 func cmdGo(args []string, config Config) {
 	projectName := args[0]
-	for _, project := range config.Projects {
-		if projectName == project.Name {
-
-			Shell(project.Path)
-			os.Exit(0)
-		}
-	}
-	Terminate("Project not found")
+	project := findProject(projectName, config)
+	Shell(project.Path)
 }
 
 func cmdAdd(args []string, config Config) {
