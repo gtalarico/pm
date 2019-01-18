@@ -2,58 +2,63 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 )
 
 type Command struct {
-	Name string
-	Args int
-	Run  func(args []string) (result bool, err error)
+	Name    string
+	NumArgs int
+	Run     func([]string, Config)
 }
 
-func cmdList(args []string) (result bool, err error) {
-	fmt.Println("Cmd: List")
-	fmt.Println(args)
-	return true, nil
+func cmdList(args []string, config Config) {
+	for _, project := range config.Projects {
+		fmt.Println(project.Name)
+	}
 }
 
-func cmdAdd(args []string) (result bool, err error) {
+func cmdGo(args []string, config Config) {
+	projectName := args[0]
+	for _, project := range config.Projects {
+		if projectName == project.Name {
+
+			Shell(project.Path)
+			os.Exit(0)
+		}
+	}
+	Terminate("Project not found")
+}
+
+func cmdAdd(args []string, config Config) {
 	fmt.Println("Cmd: Add")
 	fmt.Println(args)
-	return true, nil
 }
 
-func cmdRemove(args []string) (result bool, err error) {
+func cmdRemove(args []string, config Config) {
 	fmt.Println("Cmd: Remove")
 	fmt.Println(args)
-	return true, nil
-}
-
-func cmdGo(args []string) (result bool, err error) {
-	fmt.Println("Cmd: GO")
-	fmt.Println(args)
-	return true, nil
 }
 
 var Commands = [...]Command{
 	Command{
-		Name: "list",
-		Args: 0,
-		Run:  cmdList,
+		Name:    "list",
+		NumArgs: 0,
+		Run:     cmdList,
 	},
 	Command{
-		Name: "add",
-		Args: 1,
-		Run:  cmdAdd,
+		Name:    "add",
+		NumArgs: 1,
+		Run:     cmdAdd,
 	},
 	Command{
-		Name: "remove",
-		Args: 1,
-		Run:  cmdRemove,
+		Name:    "remove",
+		NumArgs: 1,
+		Run:     cmdRemove,
 	},
 	Command{
-		Name: "go",
-		Args: 1,
-		Run:  cmdGo,
+		Name:    "go",
+		NumArgs: 1,
+		Run:     cmdGo,
 	},
 }
 
@@ -63,28 +68,3 @@ var Commands = [...]Command{
 // 		cmdGo()
 // 	}
 // }
-
-func InvalidCommand(cmdName string) {
-	errorMsg := recover() // recover() retrives error passed by panic
-	if errorMsg != nil {
-		terminate(fmt.Sprintf("%s: %s", errorMsg, cmdName))
-	}
-}
-
-func GetCommand(cmdName string) Command {
-	defer InvalidCommand(cmdName)
-	for _, cmd := range Commands {
-		if cmd.Name == cmdName {
-			return cmd
-		}
-	}
-	panic("Invalid Command Error")
-}
-
-func parseCmd(args []string) (cmd Command, posArgs []string) {
-	cmdName := args[0]
-	cmd = GetCommand(cmdName)
-	posArgs = args[1:]
-	return
-
-}

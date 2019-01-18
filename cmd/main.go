@@ -1,47 +1,48 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 )
 
-func homePath() (path string) {
-	path = os.Getenv("HOME")
-	if path == "" {
-		err, _ := fmt.Printf("Invalid Home Dir:[%s]\n", path)
-		panic(err)
-	}
-	return
-}
-
-func readConfig() {
-	configPath := homePath() + "/.go-project"
-	configBytes, err := ioutil.ReadFile(configPath)
-	if err != nil {
-		terminate(err.Error())
-	}
-
-	var config Config
-	parsingError := json.Unmarshal(configBytes, &config)
-
-	if parsingError != nil {
-		parsingErrorMsg := fmt.Sprintf("Invalid config format: %s", parsingError)
-		terminate(parsingErrorMsg)
-	}
-	// fmt.Println(config.Projects[0].Path)
-}
-
 func Run() {
+
+	config := readConfig()
 	var args []string = os.Args[1:]
+
 	if len(args) == 0 {
-		showUsage()
+		ShowUsage()
 	}
+
 	cmd, posArgs := parseCmd(args)
-	if cmd.Args != len(posArgs) {
-		showUsage()
+	if cmd.NumArgs != len(posArgs) {
+		ShowUsage()
 	}
-	cmd.Run(posArgs)
-	// readConfig()
+
+	cmd.Run(posArgs, config)
+}
+
+func InvalidCommand(cmdName string) {
+	errMsg := recover() // recover() retrives error passed by panic
+	if errMsg != nil {
+		Terminate(fmt.Sprintf("%s: %s", errMsg, cmdName))
+	}
+}
+
+func GetCommand(cmdName string) Command {
+	defer InvalidCommand(cmdName)
+	for _, cmd := range Commands {
+		if cmd.Name == cmdName {
+			return cmd
+		}
+	}
+	panic("Invalid Command Error")
+}
+
+func parseCmd(args []string) (cmd Command, posArgs []string) {
+	cmdName := args[0]
+	cmd = GetCommand(cmdName)
+	posArgs = args[1:]
+	return
+
 }
