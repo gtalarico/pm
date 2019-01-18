@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"path/filepath"
+
+	"github.com/pkg/errors"
 )
 
 type Command struct {
@@ -24,8 +26,12 @@ func cmdList(args []string, config Config) {
 
 func cmdGo(args []string, config Config) {
 	projectName := args[0]
-	project := findProject(projectName, config)
-	Shell(project.Path)
+	project, err := getOneProject(projectName, config)
+	if err != nil {
+		Terminate(errors.Wrap(err, projectName))
+	} else {
+		Shell(project.Path)
+	}
 }
 
 func cmdAdd(args []string, config Config) {
@@ -33,33 +39,43 @@ func cmdAdd(args []string, config Config) {
 	projectPath := args[1]
 	absPath, err := filepath.Abs(projectPath)
 	if err != nil {
-		Terminate(err.Error())
+		Terminate(errors.Wrap(err, "invalid path"))
 	}
-	project := Project{
+	newProject := Project{
 		Name: projectName,
 		Path: absPath,
 	}
 	// TODO: Remove first - requires refactoring findProject
-	// project := findProject(projectName, config)
-
-	newProjects := append(config.Projects, project)
-	config.Projects = newProjects
+	projects := searchProjects(projectName, config)
+	if len(projects) == 0 {
+		config.Projects = append(config.Projects, newProject)
+	} else {
+		for i, project := range config.Projects {
+			if project.Name == newProject.Name {
+				config.Projects[i] = newProject
+			}
+		}
+	}
 	writeConfig(config)
-	printProjects(newProjects)
+	printProjects(config.Projects)
 }
 
 func cmdRemove(args []string, config Config) {
 	var projectToKeep []Project
 	projectName := args[0]
-	matchedProject := findProject(projectName, config)
-	for _, project := range config.Projects {
-		if project.Name != matchedProject.Name {
-			projectToKeep = append(projectToKeep, project)
+	matchedProject, err := getOneProject(projectName, config)
+	if err != nil {
+		Terminate(errors.Wrap(err, projectName))
+	} else {
+		for _, project := range config.Projects {
+			if project.Name != matchedProject.Name {
+				projectToKeep = append(projectToKeep, project)
+			}
 		}
+		config.Projects = projectToKeep
+		writeConfig(config)
+		printProjects(projectToKeep)
 	}
-	config.Projects = projectToKeep
-	writeConfig(config)
-	printProjects(projectToKeep)
 }
 
 var Commands = [...]Command{

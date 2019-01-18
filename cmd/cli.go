@@ -5,10 +5,14 @@ import (
 	"os"
 )
 
-func Terminate(msg string) {
+func Terminate(err error) {
 	// Show error message
-	fmt.Fprint(os.Stderr, msg)
-	os.Exit(1)
+	if err != nil {
+		fmt.Fprint(os.Stderr, err.Error())
+		os.Exit(1)
+	} else {
+		os.Exit(0)
+	}
 }
 
 func ShowUsage() {
@@ -23,6 +27,6 @@ func ShowUsage() {
 
 func ShowCmdUsage(usageMsg string) {
 	// Show usage message and exit
-	fmt.Fprint(os.Stderr, fmt.Sprintf("Usage: gg %s", usageMsg))
+	fmt.Fprint(os.Stderr, fmt.Sprintf("Usage: pm %s", usageMsg))
 	os.Exit(1)
 }

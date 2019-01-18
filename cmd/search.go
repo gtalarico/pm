@@ -1,26 +1,36 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
 
-func findProject(query string, config Config) Project {
+func searchProjects(query string, config Config) []Project {
 	var projects []Project
 	for _, project := range config.Projects {
 		if strings.Contains(project.Name, query) {
-			// if query == project.Name {
 			projects = append(projects, project)
 		}
 	}
-	if len(projects) == 0 {
-		Terminate("Project not found")
-		fmt.Println("got here")
-	} else if len(projects) > 1 {
+	return projects
+}
+
+func getOneProject(query string, config Config) (project Project, err error) {
+	projects := searchProjects(query, config)
+	numProjects := len(projects)
+
+	if numProjects == 1 {
+		project = projects[0]
+	}
+	if numProjects == 0 {
+		err = errors.New("no match")
+	}
+	if numProjects > 1 {
 		for _, project := range projects {
 			fmt.Println(project.Name)
 		}
-		Terminate("\nMore than one match.")
+		err = errors.New("multiple matches")
 	}
-	return projects[0]
+	return
 }

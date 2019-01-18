@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 const CFG_FILENAME = ".go-project"
@@ -27,8 +29,8 @@ func writeConfig(config Config) {
 	configJson, _ := json.MarshalIndent(config, "", " ")
 	writeErr := ioutil.WriteFile(path, configJson, 0644)
 	if writeErr != nil {
-		writeErrMsg := fmt.Sprintf("Could not open config: %s", path)
-		Terminate(writeErrMsg)
+		// writeErrMsg := fmt.Sprintf("Could not open config: %s", path)
+		Terminate(errors.Wrap(writeErr, path))
 	}
 }
 
@@ -36,15 +38,14 @@ func readConfig() Config {
 	path := configFilepath()
 	configBytes, readErr := ioutil.ReadFile(path)
 	if readErr != nil {
-		Terminate(readErr.Error())
+		Terminate(readErr)
 	}
 
 	var config Config
 	parsingError := json.Unmarshal(configBytes, &config)
 
 	if parsingError != nil {
-		parsingErrorMsg := fmt.Sprintf("Invalid config format: %s", parsingError)
-		Terminate(parsingErrorMsg)
+		Terminate(errors.Wrap(parsingError, path))
 	}
 	return config
 }

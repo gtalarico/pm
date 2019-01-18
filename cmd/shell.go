@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+
+	"github.com/pkg/errors"
 )
 
 func handleShellError() {
-	errMsg := recover()
-	if errMsg != nil {
-		Terminate(fmt.Sprintf("Error: %s", errMsg))
+	shellError := recover()
+	if shellError != nil {
+		err := errors.New("shell error")
+		Terminate(err)
 	}
 }
 
