@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 func Run() {
@@ -24,24 +26,28 @@ func Run() {
 func InvalidCommand(cmdName string) {
 	errMsg := recover() // recover() retrives error passed by panic
 	if errMsg != nil {
-		// Terminate(fmt.Sprintf("%s: %s", errMsg, cmdName))
 		ShowUsage()
 	}
 }
 
-func GetCommand(cmdName string) Command {
-	defer InvalidCommand(cmdName)
+func GetCommand(cmdName string) (command Command, err error) {
+	// defer InvalidCommand(cmdName)
 	for _, cmd := range Commands {
 		if cmd.Name == cmdName {
-			return cmd
+			command = cmd
+			return
 		}
 	}
-	panic("Invalid Command Error")
+	err = errors.New("invalid command")
+	return
 }
 
 func parseCmd(args []string) (cmd Command, posArgs []string) {
 	cmdName := args[0]
-	cmd = GetCommand(cmdName)
+	cmd, err := GetCommand(cmdName)
+	if err != nil {
+		ShowUsage()
+	}
 	posArgs = args[1:]
 	return
 

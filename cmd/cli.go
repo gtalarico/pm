@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"strings"
 )
 
 func Terminate(err error) {
@@ -30,4 +32,18 @@ func ShowCmdUsage(usageMsg string) {
 	// Show usage message and exit
 	fmt.Fprint(os.Stderr, fmt.Sprintf("Usage: pm %s", usageMsg))
 	os.Exit(1)
+}
+
+func confirmPrompt(msg string, default_ bool) bool {
+	fmt.Print(msg)
+	var response string
+	_, err := fmt.Scanln(&response)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if response == "" {
+		return default_
+	}
+	r := (strings.ToLower(response) == "y")
+	return r
 }

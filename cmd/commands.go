@@ -26,7 +26,7 @@ func cmdList(args []string, config Config) {
 
 func cmdGo(args []string, config Config) {
 	projectName := args[0]
-	project, err := getOneProject(projectName, config)
+	project, err := getOneProject(projectName, config, false)
 	if err != nil {
 		Terminate(errors.Wrap(err, projectName))
 	} else {
@@ -45,8 +45,7 @@ func cmdAdd(args []string, config Config) {
 		Name: projectName,
 		Path: absPath,
 	}
-	// TODO: Remove first - requires refactoring findProject
-	projects := searchProjects(projectName, config)
+	projects := searchProjects(projectName, config, true)
 	if len(projects) == 0 {
 		config.Projects = append(config.Projects, newProject)
 	} else {
@@ -63,7 +62,7 @@ func cmdAdd(args []string, config Config) {
 func cmdRemove(args []string, config Config) {
 	var projectToKeep []Project
 	projectName := args[0]
-	matchedProject, err := getOneProject(projectName, config)
+	matchedProject, err := getOneProject(projectName, config, false)
 	if err != nil {
 		Terminate(errors.Wrap(err, projectName))
 	} else {
@@ -73,6 +72,13 @@ func cmdRemove(args []string, config Config) {
 			}
 		}
 		config.Projects = projectToKeep
+
+		promptMsg := fmt.Sprintf("Delete '%s' [Y/n]? ", matchedProject.Name)
+		confirm := confirmPrompt(promptMsg, true)
+		if confirm == false {
+			Terminate(nil)
+		}
+
 		writeConfig(config)
 		printProjects(projectToKeep)
 	}
@@ -104,10 +110,3 @@ var Commands = [...]Command{
 		Run:      cmdGo,
 	},
 }
-
-// Method: Command.Static()
-// func (cmd *Command) Static() {
-// 	if cmd.Name == "go" {
-// 		cmdGo()
-// 	}
-// }
