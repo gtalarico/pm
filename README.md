@@ -6,8 +6,6 @@ Minimal CLI Project Manager
 
 ## Installing
 
-This project uses [goreleaser](https://goreleaser.com/) to distribute its binaries.
-
 ```
 brew install goreleaser
 ```
@@ -48,6 +46,11 @@ TODO: Update bbash and zsh with lazy as per [this](http://click.palletsprojects.
 This project is almost identical to [github.com/Angelmmiguel/pm](https://github.com/Angelmmiguel/pm), which is much more mature.
 
 You should absolutely use that instead.
+
+## Release
+
+This project uses [goreleaser](https://goreleaser.com/) to distribute its binaries.
+
 
 
 ## License
