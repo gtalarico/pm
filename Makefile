@@ -14,16 +14,18 @@ usage:
 install:
 	go install -a .
 
-## release: create a release
+## release: create a releasegit s
+
 release:
-	goreleaser --rm-dist
-	rm -rdf dist
+	goreleaser release --skip-publish --rm-dist
 
 ## brew: create brew formulae
 brew:
-	brew create distpm_0.1.0_Darwin_x86_64.tar.gz
-804 KB
+	goreleaser release --skip-publish --rm-dist
+	# brew create distpm_0.1.0_Darwin_x86_64.tar.gz
 
+# https://goreleaser.com/customization/#Homebrew
+# https://docs.brew.sh/Taps.html
 
 
 ## lint: Lint
