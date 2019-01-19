@@ -1,21 +1,15 @@
 # Project Manager
 
-[![CircleCI](https://circleci.com/gh/gtalarico/recordbin-python.svg?style=svg)](https://circleci.com/gh/gtalarico/pm)
-
-[![codecov](https://codecov.io/gh/gtalarico/recordbin-python/branch/master/graph/badge.svg)](https://codecov.io/gh/gtalarico/recordbin-python)
-
-Python Client for Python [RecordBin](http://www.github.com/gtalarico/recordbin-api)
+Minimal CLI Project Manager
 
 ---
 
-Alternatives:
-
-* https://github.com/Angelmmiguel/pm
-
 ## Installing
 
+This project uses [goreleaser](https://goreleaser.com/) to distribute its binaries.
+
 ```
-WIP
+brew install goreleaser
 ```
 
 # Usage
@@ -48,6 +42,12 @@ complete --command pm --arguments '(pm list)' --no-files
 ```
 
 TODO: Update bbash and zsh with lazy as per [this](http://click.palletsprojects.com/en/7.x/bashcomplete/#activation-script)
+
+## About
+
+This project is almost identical to [github.com/Angelmmiguel/pm](https://github.com/Angelmmiguel/pm), which is much more mature.
+
+You should absolutely use that instead.
 
 
 ## License

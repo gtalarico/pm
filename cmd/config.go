@@ -18,6 +18,7 @@ type Config struct {
 type Project struct {
 	Path string `json:"path"`
 	Name string `json:"name"`
+	// Command string `json:"command"`
 }
 
 func configFilepath() string {
