@@ -34,16 +34,19 @@ func ShowCmdUsage(usageMsg string) {
 	os.Exit(1)
 }
 
-func confirmPrompt(msg string, default_ bool) bool {
-	fmt.Print(msg)
+func confirmPrompt(promptMsg string, default_ bool) bool {
+	fmt.Print(promptMsg)
+
 	var response string
 	_, err := fmt.Scanln(&response)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	if response == "" {
 		return default_
 	}
+
 	r := (strings.ToLower(response) == "y")
 	return r
 }
