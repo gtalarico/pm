@@ -1,0 +1,27 @@
+# .circleci/config.yml
+# https://goreleaser.com/ci/
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.10
+    steps:
+      - checkout
+      # Run tests ...
+      # - run: curl -sL https://git.io/goreleaser | bash
+  release:
+    docker:
+      - image: circleci/golang:1.10
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash
+workflows:
+  version: 2
+  release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/

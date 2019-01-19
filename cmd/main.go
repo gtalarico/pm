@@ -3,52 +3,37 @@ package cmd
 import (
 	"os"
 
-	"github.com/pkg/errors"
+	"github.com/gtalarico/pm/internal/cli"
+	"github.com/gtalarico/pm/internal/commands"
+	"github.com/gtalarico/pm/internal/config"
 )
 
 func Run() {
 
-	config := readConfig()
+	// Get all args, excluding binary name
 	var args []string = os.Args[1:]
+	cmdName, posArgs, err := cli.ValidateArgs(args)
 
-	if len(args) == 0 {
-		ShowUsage()
-	}
-
-	cmd, posArgs := parseCmd(args)
-	if cmd.NumArgs != len(posArgs) {
-		ShowCmdUsage(cmd.UsageMsg)
-	}
-
-	cmd.Run(posArgs, config)
-}
-
-func InvalidCommand(cmdName string) {
-	errMsg := recover() // recover() retrives error passed by panic
-	if errMsg != nil {
-		ShowUsage()
-	}
-}
-
-func GetCommand(cmdName string) (command Command, err error) {
-	// defer InvalidCommand(cmdName)
-	for _, cmd := range Commands {
-		if cmd.Name == cmdName {
-			command = cmd
-			return
-		}
-	}
-	err = errors.New("invalid command")
-	return
-}
-
-func parseCmd(args []string) (cmd Command, posArgs []string) {
-	cmdName := args[0]
-	cmd, err := GetCommand(cmdName)
+	// No Args
 	if err != nil {
-		ShowUsage()
+		cli.ShowUsage()
 	}
-	posArgs = args[1:]
-	return
+
+	// Invalid command name
+	// or
+	// Not the right number of args for a given command
+	cmd, err := commands.GetCommand(cmdName)
+	if cmd.NumArgs != len(posArgs) {
+		cli.ShowCmdUsage(cmd.UsageMsg)
+	}
+
+	// Get Config
+	config, err := config.ReadConfig()
+	if err != nil {
+		cli.Terminate(err)
+	}
+
+	// Run Command
+	cmd.Run(posArgs, config)
 
 }
