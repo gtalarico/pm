@@ -10,11 +10,8 @@ usage:
 	@echo "$(L_GREEN)Choose a command: $(PWD) $(NC)"
 	@bash -c "sed -ne 's/^##//p' ./Makefile | column -t -s ':' |  sed -e 's/^/ /'"
 
-## release: create a release
 install:
 	go install -a .
-
-## release: create a releasegit s
 
 release:
 	goreleaser release --skip-publish --rm-dist

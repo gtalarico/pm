@@ -8,39 +8,38 @@ Minimal CLI Project Manager
 
 
 ```
-$ brew install goreleaser
+$ brew tap-pin gtalarico/pm
 ```
 
 # Usage
 
+Add a project
+```
+$ pm add myproject ~/code/repos/myproject
+```
+
+Go to project
+```
+$ pm go myproject
+Starting new shell...
+```
+
+List projects
 ```
 $ pm list
+myproject
 ```
 
-## Autocomplete
-
-### Bash
-
-```bash
-# .bashrc
-eval "$(_PM_COMPLETE=source pm)"
-````
-
-### zsh
-
-```bash
-# .zshrc
-eval "$(_PM_COMPLETE=source_zsh pm)"
+Remove project
+```
+$ pm remove myproject
 ```
 
-### fish
+## Configuration File
 
-```bash
-# .config/fish/completions/pm.fish
-complete --command pm --arguments '(pm list)' --no-files
-```
-
-TODO: Update bbash and zsh with lazy as per [this](http://click.palletsprojects.com/en/7.x/bashcomplete/#activation-script)
+Project settings is stored in ~/.go-projects.
+The first time you use `pm` one will be automatically created.
+You may edit this file on your own as needed.
 
 ## About
 
@@ -58,3 +57,12 @@ that can write to this repository.
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
+
+
+# Todo
+
+- [ ] Add homebrew tab
+- [ ] Add tests + circleci
+- [ ] Add Action cmd
+- [ ] Resolve fish, bash, zsh autocomplete
+- [ ] Refactor
