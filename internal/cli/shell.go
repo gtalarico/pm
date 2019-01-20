@@ -12,7 +12,7 @@ func handleShellError() {
 	shellError := recover()
 	if shellError != nil {
 		err := errors.New("shell error")
-		Terminate(err)
+		Abort(err)
 	}
 }
 

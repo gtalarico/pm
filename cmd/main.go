@@ -17,12 +17,16 @@ func Run() {
 	// No Args
 	if err != nil {
 		cli.ShowUsage()
+		os.Exit(1)
 	}
 
 	// Invalid command name
 	// or
 	// Not the right number of args for a given command
 	cmd, err := commands.GetCommand(cmdName)
+	if err != nil {
+		cli.Abort(err)
+	}
 	if cmd.NumArgs != len(posArgs) {
 		cli.ShowCmdUsage(cmd.UsageMsg)
 	}
@@ -30,7 +34,7 @@ func Run() {
 	// Get Config
 	config, err := config.ReadConfig()
 	if err != nil {
-		cli.Terminate(err)
+		cli.Abort(err)
 	}
 
 	// Run Command

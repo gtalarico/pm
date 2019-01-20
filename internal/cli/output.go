@@ -9,14 +9,10 @@ import (
 	"github.com/gtalarico/pm/internal/config"
 )
 
-func Terminate(err error) {
-	// Show error message
-	if err != nil {
-		fmt.Fprint(os.Stderr, err.Error())
-		os.Exit(1)
-	} else {
-		os.Exit(0)
-	}
+func Abort(err error) {
+	// Show error message and exit with error
+	fmt.Fprint(os.Stderr, err.Error())
+	os.Exit(1)
 }
 
 // Prompts user to confirm a "y" or "n" and returns as boolean

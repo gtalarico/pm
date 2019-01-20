@@ -2,12 +2,24 @@ package commands
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/gtalarico/pm/internal/cli"
 	"github.com/gtalarico/pm/internal/config"
 	"github.com/pkg/errors"
 )
+
+func GetCommand(cmdName string) (command Command, err error) {
+	for _, cmd := range Commands {
+		if cmd.Name == cmdName {
+			command = cmd
+			return
+		}
+	}
+	err = errors.New("invalid command")
+	return
+}
 
 func CommandList(args []string, config config.Config) {
 	cli.PrintProjects(config.Projects)
@@ -17,7 +29,7 @@ func CommandGo(args []string, cfg config.Config) {
 	projectName := args[0]
 	project, err := config.GetOneProject(projectName, cfg)
 	if err != nil {
-		cli.Terminate(errors.Wrap(err, projectName))
+		cli.Abort(errors.Wrap(err, projectName))
 	} else {
 		cli.Shell(project.Path)
 	}
@@ -28,7 +40,7 @@ func CommandAdd(args []string, cfg config.Config) {
 	projectPath := args[1]
 	absPath, err := filepath.Abs(projectPath)
 	if err != nil {
-		cli.Terminate(errors.Wrap(err, "invalid path"))
+		cli.Abort(errors.Wrap(err, "invalid path"))
 	}
 	newProject := config.Project{
 		Name: projectName,
@@ -46,7 +58,7 @@ func CommandAdd(args []string, cfg config.Config) {
 	}
 	writeError := config.WriteConfig(cfg)
 	if writeError != nil {
-		cli.Terminate(writeError)
+		cli.Abort(writeError)
 	}
 	cli.PrintProjects(cfg.Projects)
 }
@@ -56,7 +68,7 @@ func CommandRemove(args []string, cfg config.Config) {
 	projectName := args[0]
 	matchedProject, err := config.GetOneProject(projectName, cfg)
 	if err != nil {
-		cli.Terminate(errors.Wrap(err, projectName))
+		cli.Abort(errors.Wrap(err, projectName))
 	} else {
 		for _, project := range cfg.Projects {
 			if project.Name != matchedProject.Name {
@@ -68,12 +80,12 @@ func CommandRemove(args []string, cfg config.Config) {
 		promptMsg := fmt.Sprintf("Delete '%s' [Y/n]? ", matchedProject.Name)
 		confirm := cli.ConfirmPrompt(promptMsg, true)
 		if confirm == false {
-			cli.Terminate(nil)
+			os.Exit(0)
 		}
 
 		writeError := config.WriteConfig(cfg)
 		if writeError != nil {
-			cli.Terminate(writeError)
+			cli.Abort(writeError)
 		}
 		cli.PrintProjects(projectToKeep)
 	}

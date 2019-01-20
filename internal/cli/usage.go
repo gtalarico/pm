@@ -13,7 +13,6 @@ func ShowUsage() {
 	fmt.Fprintln(os.Stderr, "  go		Go to project")
 	fmt.Fprintln(os.Stderr, "  remove	Remove project")
 	fmt.Fprintln(os.Stderr, "  add 		Add project")
-	os.Exit(1)
 }
 
 // Shows usage of a command and exits
