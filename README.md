@@ -6,9 +6,15 @@ Minimal CLI Project Manager
 
 ## Installing
 
+MacOs
+```
+$ brew install gtalarico/homebrew-tap/pm
+```
+
+From Source
 
 ```
-$ brew tap-pin gtalarico/pm
+$ go install .
 ```
 
 # Usage

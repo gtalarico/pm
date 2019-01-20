@@ -85,30 +85,10 @@ brew:
   #   head "https://github.com/some/package.git"
   #   ...
 
-  # Packages your package depends on.
-  # dependencies:
-  #   - git
-  #   - zsh
-
-  # Packages that conflict with your package.
-  # conflicts:
-  #   - svn
-  #   - bash
-
-  # Specify for packages that run as a service.
-  # Default is empty.
-  # plist: |
-  #   <?xml version="1.0" encoding="UTF-8"?>
-  #   ...
-
   # So you can `brew test` your formula.
   # Default is empty.
   test: |
-    system "#{bin}/program --version"
-    ...
+    system "#{bin}/pm list"
 
-  # Custom install script for brew.
-  # Default is 'bin.install "program"'.
   install: |
-    bin.install "program"
-    ...
+    bin.install "pm"
