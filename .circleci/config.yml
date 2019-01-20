@@ -5,16 +5,25 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/gtalarico/pm
+    # directory where steps are run. Path must conform to the Go Workspace requirements
+    environment: # environment variables for the build itself
+      TEST_RESULTS: /tmp/test-results # path to where test results will be saved
     steps:
       - checkout
+      - run: mkdir -p $TEST_RESULTS # create the test results directory
+
+      # Dependencies
+      # Normally, this step would be in a custom primary image
+      - run: go get github.com/pkg/errors
+
       # Run tests ...
+      - run:
+          name: Run test tests
+          command: go test ./... -v
+      # Release ...
       # - run: curl -sL https://git.io/goreleaser | bash
-  release:
-    docker:
-      - image: circleci/golang:1.10
-    steps:
-      - checkout
-      - run: curl -sL https://git.io/goreleaser | bash
+      # - run: curl -sL https://git.io/goreleaser | bash
 workflows:
   version: 2
   release:
