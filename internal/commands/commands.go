@@ -15,7 +15,7 @@ func CommandList(args []string, config config.Config) {
 
 func CommandGo(args []string, cfg config.Config) {
 	projectName := args[0]
-	project, err := config.GetOneProject(projectName, cfg, false)
+	project, err := config.GetOneProject(projectName, cfg)
 	if err != nil {
 		cli.Terminate(errors.Wrap(err, projectName))
 	} else {
@@ -34,7 +34,7 @@ func CommandAdd(args []string, cfg config.Config) {
 		Name: projectName,
 		Path: absPath,
 	}
-	projects := config.SearchProjects(projectName, cfg, true)
+	projects := config.SearchProjects(projectName, cfg)
 	if len(projects) == 0 {
 		cfg.Projects = append(cfg.Projects, newProject)
 	} else {
@@ -54,7 +54,7 @@ func CommandAdd(args []string, cfg config.Config) {
 func CommandRemove(args []string, cfg config.Config) {
 	var projectToKeep []config.Project
 	projectName := args[0]
-	matchedProject, err := config.GetOneProject(projectName, cfg, false)
+	matchedProject, err := config.GetOneProject(projectName, cfg)
 	if err != nil {
 		cli.Terminate(errors.Wrap(err, projectName))
 	} else {
