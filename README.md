@@ -43,7 +43,7 @@ $ pm remove myproject
 
 ## Configuration File
 
-Project settings is stored in ~/.go-projects.
+Project settings is stored in ~/.pm.json
 The first time you use `pm` one will be automatically created.
 You may edit this file on your own as needed.
 

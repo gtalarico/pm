@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-const CFG_FILENAME = ".go-project"
+const CFG_FILENAME = ".pm.json"
 
 func WriteConfig(config Config) (err error) {
 	path := ConfigFilepath()
