@@ -1,5 +1,4 @@
-.PHONY: usage start stop restart inspect log stopall tests cli requirements clean deploy
-
+.PHONY: release(GO)
 
 # Colors
 NC=\x1b[0m
@@ -13,18 +12,6 @@ usage:
 install:
 	go install -a .
 
+# release: creates github release on gtalarico/pm and brew on gtalarico/homebrew-tap
 release:
-	goreleaser release --skip-publish --rm-dist
-
-## brew: create brew formulae
-brew:
-	goreleaser release --skip-publish --rm-dist
-	# brew create distpm_0.1.0_Darwin_x86_64.tar.gz
-
-# https://goreleaser.com/customization/#Homebrew
-# https://docs.brew.sh/Taps.html
-
-
-## lint: Lint
-lint:
-	ls
+	goreleaser release --rm-dist
