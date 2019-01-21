@@ -1,20 +1,22 @@
 # Project Manager
 
+[![CircleCI](https://circleci.com/gh/gtalarico/pm.svg?style=svg)](https://circleci.com/gh/gtalarico/pm)
+
 Minimal CLI Project Manager
 
 ---
 
 ## Installing
 
-MacOs
+MacOs (brew)
 ```
 $ brew install gtalarico/homebrew-tap/pm
 ```
 
-From Source
+Using Go
 
 ```
-$ go install .
+$ go get github.com/gtalarico/pm
 ```
 
 # Usage
@@ -47,28 +49,14 @@ Project settings is stored in ~/.pm.json
 The first time you use `pm` one will be automatically created.
 You may edit this file on your own as needed.
 
-## About
+## Disclaimer
 
-This project is almost identical to [github.com/Angelmmiguel/pm](https://github.com/Angelmmiguel/pm), which is much more mature.
+This project is _very_ similar to [github.com/Angelmmiguel/pm](https://github.com/Angelmmiguel/pm),
+which is much more mature. You should absolutely use that instead.
 
-You should absolutely use that instead.
-
-## Release
-
-This project uses [goreleaser](https://goreleaser.com/) to distribute its binaries.
-
-To use goreleaser, you must export the variable `GITHUB_TOKEN` with a valid token
-that can write to this repository.
+I built this project primarily to learn go.
 
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
 
-
-# Todo
-
-- [ ] Add homebrew tab
-- [ ] Add tests + circleci
-- [ ] Add Action cmd
-- [ ] Resolve fish, bash, zsh autocomplete
-- [ ] Refactor
