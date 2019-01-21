@@ -7,12 +7,13 @@ import (
 
 // Shows usage of all available commands and exits
 func ShowUsage() {
-	fmt.Fprintln(os.Stderr, "Usage: pm <command> [<args>]")
-	fmt.Fprintln(os.Stderr, "")
-	fmt.Fprintln(os.Stderr, "  list		List projects")
-	fmt.Fprintln(os.Stderr, "  go		Go to project")
-	fmt.Fprintln(os.Stderr, "  remove	Remove project")
-	fmt.Fprintln(os.Stderr, "  add 		Add project")
+	usage :=
+		`Usage:
+	pm list
+	pm go <project-name>
+	pm add <project-name> <project-path>
+	pm remove <project-name>`
+	fmt.Fprintln(os.Stderr, usage)
 }
 
 // Shows usage of a command and exits

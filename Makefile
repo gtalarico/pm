@@ -9,9 +9,6 @@ usage:
 	@echo "$(L_GREEN)Choose a command: $(PWD) $(NC)"
 	@bash -c "sed -ne 's/^##//p' ./Makefile | column -t -s ':' |  sed -e 's/^/ /'"
 
-install:
-	go install -a .
-
 # release: creates github release on gtalarico/pm and brew on gtalarico/homebrew-tap
 release:
 	goreleaser release --rm-dist

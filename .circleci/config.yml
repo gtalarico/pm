@@ -16,7 +16,8 @@ jobs:
       # Dependencies
       # Normally, this step would be in a custom primary image
       - run: go get github.com/pkg/errors
-
+  test:
+    steps:
       # Run tests ...
       - run:
           name: Run test tests
@@ -26,6 +27,9 @@ jobs:
       # - run: curl -sL https://git.io/goreleaser | bash
 workflows:
   version: 2
+  build:
+    jobs:
+      -build
   release:
     jobs:
       - release:

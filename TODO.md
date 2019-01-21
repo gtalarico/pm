@@ -2,6 +2,6 @@
 
 - [x] Add homebrew tab
 - [x] Add tests + circleci
+- [X] Add Fish Autocomplete
 - [ ] Add Action cmd
-- [ ] Resolve fish, bash, zsh autocomplete
 - [ ] Refactor
