@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -47,6 +48,39 @@ func Shell(cwd string) {
 	if err != nil {
 		panic(err)
 	}
+
+	stdin := os.Stdin
+	stdout := os.Stdout
+	defer func() {
+		os.Stdin = stdin
+		os.Stdout = stdout
+	}()
+
+	r, w, _ := os.Pipe()
+	os.Stdin = r
+	os.Stdout = w
+
+	time.Sleep(1 * time.Second)
+	// var in string
+	// in = "ls"
+	// w.WriteString("ls\n\n")
+	w.Write([]byte("ls\n"))
+	// w.Close()
+	// fmt.Scan(&in)
+	// fmt.Println("ls")
+	// w.Close()
+
+	// stdin := os.Stdin
+	// stdin.Write([]byte("ls\n"))
+	// io.WriteString(stdin, "ls\n")
+	// _, w := io.Pipe()
+	// writer := io.Writer(w)
+	// go io.Copy(writer, os.Stdin)
+	// go writer.Write([]byte("ls\n"))
+	// // stdin.Write(<-stdinChan)
+	// stdin.Write([]byte("ls\n"))
+	// stdin = stdin.Write(strings.NewReader("ls\n"))
+	// io.WriteString(stdin, "")
 
 	// Wait until user exits the shell
 	state, err := proc.Wait()
