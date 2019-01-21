@@ -16,6 +16,8 @@ jobs:
       # Dependencies
       # Normally, this step would be in a custom primary image
       - run: go get github.com/pkg/errors
+
+      # Run tests ...
       - run:
           name: Run test tests
           command: go test ./... -v
