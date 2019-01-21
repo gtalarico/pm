@@ -24,14 +24,14 @@ jobs:
       # Release ...
       # - run: curl -sL https://git.io/goreleaser | bash
       # - run: curl -sL https://git.io/goreleaser | bash
-workflows:
-  version: 2
-  release:
-    jobs:
-      - build:
-        filters:
-            branches:
-              ignore: /.*/
+# workflows:
+#   version: 2
+#   release:
+#     jobs:
+#       - build:
+#         filters:
+#             branches:
+#               ignore: /.*/
       # - release:
       #     filters:
       #       branches:
