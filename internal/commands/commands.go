@@ -79,7 +79,7 @@ func CommandRemove(args []string, cfg config.Config) {
 
 		promptMsg := fmt.Sprintf("Delete '%s' [Y/n]? ", matchedProject.Name)
 		confirm := cli.ConfirmPrompt(promptMsg, true)
-		if confirm == false {
+		if !confirm {
 			os.Exit(0)
 		}
 
