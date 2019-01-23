@@ -16,6 +16,15 @@ func SearchProjects(query string, config Config) []Project {
 	return projects
 }
 
+func MatchProjects(query string, config Config) (project Project) {
+	for _, p := range config.Projects {
+		if p.Name == query {
+			project = p
+		}
+	}
+	return
+}
+
 func GetOneProject(query string, config Config) (project Project, err error) {
 	projects := SearchProjects(query, config)
 	numProjects := len(projects)
@@ -27,10 +36,15 @@ func GetOneProject(query string, config Config) (project Project, err error) {
 		err = errors.New("no match")
 	}
 	if numProjects > 1 {
-		for _, project := range projects {
-			fmt.Println(project.Name)
+		exactMatch := MatchProjects(query, config)
+		if exactMatch.Name == query {
+			project = exactMatch
+		} else {
+			for _, project := range projects {
+				fmt.Println(project.Name)
+			}
+			err = errors.New("multiple matches")
 		}
-		err = errors.New("multiple matches")
 	}
 	return
 }
