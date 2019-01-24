@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-func SearchProjects(query string, config Config) []Project {
-	var projects []Project
+func SearchProjects(query string, config Config) []*Project {
+	var projects []*Project
 	for _, project := range config.Projects {
 		if strings.Contains(project.Name, query) {
 			projects = append(projects, project)
@@ -16,7 +16,7 @@ func SearchProjects(query string, config Config) []Project {
 	return projects
 }
 
-func MatchProjects(query string, config Config) (project Project) {
+func MatchProjects(query string, config Config) (project *Project) {
 	for _, p := range config.Projects {
 		if p.Name == query {
 			project = p
@@ -25,7 +25,7 @@ func MatchProjects(query string, config Config) (project Project) {
 	return
 }
 
-func GetOneProject(query string, config Config) (project Project, err error) {
+func GetOneProject(query string, config Config) (project *Project, err error) {
 	projects := SearchProjects(query, config)
 	numProjects := len(projects)
 

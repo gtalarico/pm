@@ -1,7 +1,7 @@
 package config
 
 type Config struct {
-	Projects []Project `json:"projects"`
+	Projects []*Project `json:"projects"`
 }
 
 type Project struct {
