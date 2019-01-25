@@ -10,30 +10,31 @@ default-restore: &default-restore
       keys:
         - go-pkgs
 
+default-get: &default-get
+  run: go get -t -v ./...
+
 jobs:
   build:
     <<: *default-docker
     steps:
       - checkout
-      - *default-restore
-      - run: go get -t -v ./...
-      - run: go build -a .
-      - save_cache:
-          key: go-pkgs
-          paths:
-            - /go/src/github.com/
+      - *default-get
+      # - save_cache:
+      #     key: go-pkgs
+      #     paths:
+      #       - /go/src/github.com/
   test:
     <<: *default-docker
     steps:
       - checkout
-      - *default-restore
+      - *default-get
       - run: go test ./...
 
   lint:
     <<: *default-docker
     steps:
       - checkout
-      - *default-restore
+      - *default-get
 
       # Install Linter
       - run: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.13.1
@@ -45,7 +46,7 @@ jobs:
     <<: *default-docker
     steps:
       - checkout
-      - *default-restore
+      - *default-get
 
       - run: go get github.com/mattn/goveralls
       - run: go test ./... -cover -race -coverprofile=coverage.out
@@ -55,7 +56,7 @@ jobs:
     <<: *default-docker
     steps:
       - checkout
-      - *default-restore
+      - *default-get
 
       - run: echo "Release Mock"
       # - run: curl -sL https://git.io/goreleaser | bash
