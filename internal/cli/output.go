@@ -16,7 +16,7 @@ func Abort(err error) {
 }
 
 // Prompts user to confirm a "y" or "n" and returns as boolean
-func ConfirmPrompt(promptMsg string, default_ bool) bool {
+func ConfirmPrompt(promptMsg string, defaultResponse bool) bool {
 	fmt.Print(promptMsg)
 
 	var response string
@@ -26,7 +26,7 @@ func ConfirmPrompt(promptMsg string, default_ bool) bool {
 	}
 
 	if response == "" {
-		return default_
+		return defaultResponse
 	}
 
 	r := (strings.ToLower(response) == "y")

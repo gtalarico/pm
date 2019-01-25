@@ -11,7 +11,7 @@ import (
 func Run() {
 
 	// Get all args, excluding binary name
-	var args []string = os.Args[1:]
+	args := os.Args[1:]
 	cmdName, posArgs, err := cli.ValidateArgs(args)
 
 	// No Args

@@ -27,7 +27,8 @@ func TestSearchProjects(t *testing.T) {
 	for _, test := range tests {
 		projects := SearchProjects(test.input, cfg)
 		if len(projects) != test.expected {
-			t.Error("Test Failed: {} inputted, {} expected, recieved: {}", test.input, test.expected, projects)
+			t.Error("Test Failed: {} inputted, {} expected, recieved: {}",
+				test.input, test.expected, projects)
 		}
 	}
 
