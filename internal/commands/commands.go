@@ -46,15 +46,12 @@ func CommandAdd(args []string, cfg config.Config) {
 		Name: projectName,
 		Path: absPath,
 	}
-	projects := config.SearchProjects(projectName, cfg)
-	if len(projects) == 0 {
+	project := config.MatchProjects(projectName, cfg)
+
+	if project == nil {
 		cfg.Projects = append(cfg.Projects, newProject)
 	} else {
-		for i, project := range cfg.Projects {
-			if project.Name == newProject.Name {
-				cfg.Projects[i] = newProject
-			}
-		}
+		project.Path = newProject.Path
 	}
 	writeError := config.WriteConfig(cfg)
 	if writeError != nil {
