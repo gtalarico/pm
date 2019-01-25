@@ -1,7 +1,6 @@
 # PM - CLI Project Manager
 
 [![CircleCI](https://circleci.com/gh/gtalarico/pm.svg?style=svg)](https://circleci.com/gh/gtalarico/pm)
-
 [![Coverage Status](https://coveralls.io/repos/github/gtalarico/pm/badge.svg?branch=master)](https://coveralls.io/github/gtalarico/pm?branch=master)
 
 Minimal CLI Project Manager
@@ -61,7 +60,7 @@ You may edit this file manually on your own.
 This project is _very_ similar to [github.com/Angelmmiguel/pm](https://github.com/Angelmmiguel/pm),
 which appears to be mature. You should probably use that instead.
 
-This project was created as Go learning project. 
+This project was created as Go learning project.
 
 ![](https://tutorialedge.net/images/golang.png)
 
