@@ -11,7 +11,7 @@ import (
 )
 
 func GetCommand(cmdName string) (command Command, err error) {
-	for _, cmd := range Commands {
+	for _, cmd := range Commands() {
 		if cmd.Name == cmdName {
 			command = cmd
 			return
@@ -91,29 +91,32 @@ func CommandRemove(args []string, cfg config.Config) {
 	}
 }
 
-var Commands = [...]Command{
-	Command{
-		Name:     "list",
-		NumArgs:  0, // pm list
-		UsageMsg: "list",
-		Run:      CommandList,
-	},
-	Command{
-		Name:     "add",
-		NumArgs:  2, // pm add <name> <path>
-		UsageMsg: "add <project-name> <path>",
-		Run:      CommandAdd,
-	},
-	Command{
-		Name:     "remove",
-		NumArgs:  1, // pm remove <query>
-		UsageMsg: "remove <project-name>",
-		Run:      CommandRemove,
-	},
-	Command{
-		Name:     "go",
-		NumArgs:  1, // pm go <project-name>
-		UsageMsg: "go <project-name>",
-		Run:      CommandGo,
-	},
+func Commands() (commands []Command) {
+	commands = []Command{
+		{
+			Name:     "list",
+			NumArgs:  0, // pm list
+			UsageMsg: "list",
+			Run:      CommandList,
+		},
+		{
+			Name:     "add",
+			NumArgs:  2, // pm add <name> <path>
+			UsageMsg: "add <project-name> <path>",
+			Run:      CommandAdd,
+		},
+		{
+			Name:     "remove",
+			NumArgs:  1, // pm remove <query>
+			UsageMsg: "remove <project-name>",
+			Run:      CommandRemove,
+		},
+		{
+			Name:     "go",
+			NumArgs:  1, // pm go <project-name>
+			UsageMsg: "go <project-name>",
+			Run:      CommandGo,
+		},
+	}
+	return
 }
