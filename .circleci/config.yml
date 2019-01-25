@@ -50,6 +50,15 @@ jobs:
       - run: go test ./... -cover -race -coverprofile=coverage.out
       - run: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
 
+  release:
+    <<: *default-docker
+    steps:
+      - checkout
+      - *default-restore
+
+      - run: echo "Release Mock"
+      # - run: curl -sL https://git.io/goreleaser | bash
+
 workflows:
   version: 2
   build-test-coverage-deploy:
@@ -64,20 +73,9 @@ workflows:
       - coverage:
           requires:
               - test
-#       # Release ...
-#       # - run: curl -sL https://git.io/goreleaser | bash
-#       # - run: curl -sL https://git.io/goreleaser | bash
-# # workflows:
-# #   version: 2
-# #   release:
-# #     jobs:
-# #       - build:
-# #         filters:
-# #             branches:
-# #               ignore: /.*/
-#       # - release:
-#       #     filters:
-#       #       branches:
-#       #         ignore: /.*/
-#       #       tags:
-#       #         only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
