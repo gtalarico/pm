@@ -1,10 +1,39 @@
-# Project Manager
+# PM - CLI Project Manager
 
 [![CircleCI](https://circleci.com/gh/gtalarico/pm.svg?style=svg)](https://circleci.com/gh/gtalarico/pm)
 
 Minimal CLI Project Manager
 
 ---
+
+`pm` is a simple CLI utility to help you keep frequently used project paths at your finger tips.
+
+![Demo Gif](demo.gif)
+
+## Usage
+
+Add a project
+```
+~ $ pm add myproject ~/code/repos/myproject
+```
+
+Go to project
+```
+~ $ pm go myproject
+Starting new shell ...
+~/code/repos/myproject $
+```
+
+List projects
+```
+$ pm list
+myproject
+```
+
+Remove project
+```
+$ pm remove myproject
+```
 
 ## Installing
 
@@ -19,42 +48,20 @@ Using Go
 $ go get github.com/gtalarico/pm
 ```
 
-# Usage
-
-Add a project
-```
-$ pm add myproject ~/code/repos/myproject
-```
-
-Go to project
-```
-$ pm go myproject
-Starting new shell...
-```
-
-List projects
-```
-$ pm list
-myproject
-```
-
-Remove project
-```
-$ pm remove myproject
-```
-
 ## Configuration File
 
-Project settings is stored in ~/.pm.json
+Project settings are stored in `~/.pm.json`
 The first time you use `pm` one will be automatically created.
-You may edit this file on your own as needed.
+You may edit this file manually on your own.
 
 ## Disclaimer
 
 This project is _very_ similar to [github.com/Angelmmiguel/pm](https://github.com/Angelmmiguel/pm),
-which is much more mature. You should absolutely use that instead.
+which appears to be mature. You should probably use that instead.
 
-I built this project primarily to learn go.
+This project was created as Go learning project. 
+
+![](https://tutorialedge.net/images/golang.png)
 
 ## License
 
