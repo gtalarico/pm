@@ -68,3 +68,7 @@ This project was created as Go learning project.
 
 [MIT](https://opensource.org/licenses/MIT)
 
+## Todo
+
+- [ ] Create Post "go" actions (eg. `code .`, `venv/activate`, etc)
+- [ ] Test Coeverage
