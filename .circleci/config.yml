@@ -17,6 +17,7 @@ jobs:
       - checkout
       - *default-restore
       - run: go get -t -v ./...
+      - run: go build -a .
       - save_cache:
           key: go-pkgs
           paths:
