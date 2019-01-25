@@ -1,41 +1,39 @@
 version: 2
 
+default-docker: &default-docker
+  docker:
+    - image: circleci/golang:1.10
+  working_directory: /go/src/github.com/gtalarico/pm
+
+default-restore: &default-restore
+  restore_cache:
+      keys:
+        - go-pkgs
+
 jobs:
   build:
-    docker:
-    - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/gtalarico/pm
+    <<: *default-docker
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-pkgs
+      - *default-restore
       - run: go get -t -v ./...
       - save_cache:
           key: go-pkgs
           paths:
             - /go/src/github.com/
   test:
-    docker:
-    - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/gtalarico/pm
+    <<: *default-docker
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-pkgs
+      - *default-restore
       - run: go get -t -v ./...
       - run: go test ./...
 
   lint:
-    docker:
-    - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/gtalarico/pm
+    <<: *default-docker
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-pkgs
+      - *default-restore
       - run: go get -t -v ./...
 
       # Install Linter
@@ -45,14 +43,10 @@ jobs:
       - run: golangci-lint run ./...
 
   coverage:
-    docker:
-    - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/gtalarico/pm
+    <<: *default-docker
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-pkgs
+      - *default-restore
       - run: go get -t -v ./...
       - run: go get github.com/mattn/goveralls
       - run: go test ./... -cover -race -coverprofile=coverage.out
