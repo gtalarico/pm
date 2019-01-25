@@ -38,7 +38,7 @@ $ pm remove myproject
 
 ## Installing
 
-MacOs (brew)
+MacOs (brew) - [Formula](https://github.com/gtalarico/homebrew-tap/blob/master/Formula/pm.rb)
 ```
 $ brew install gtalarico/homebrew-tap/pm
 ```
