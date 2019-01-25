@@ -76,6 +76,8 @@ workflows:
           requires:
               - test
       - release:
+          requires:
+              - lint
           filters:
             branches:
               ignore: /.*/
