@@ -9,12 +9,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-const CFG_FILENAME = ".pm.json"
+const ConfigFilename = ".pm.json"
 
 func WriteConfig(config Config) (err error) {
-	path := ConfigFilepath()
-	configJson, _ := json.MarshalIndent(config, "", " ")
-	writeErr := ioutil.WriteFile(path, configJson, 0644)
+	path := configFilepath()
+	configJSON, _ := json.MarshalIndent(config, "", " ")
+	writeErr := ioutil.WriteFile(path, configJSON, 0644)
 	err = errors.Wrap(writeErr, path)
 	return
 }
@@ -27,7 +27,7 @@ func CreateConfig(path string) (cfg Config, err error) {
 }
 
 func ReadConfig() (cfg Config, err error) {
-	path := ConfigFilepath()
+	path := configFilepath()
 	configBytes, readErr := ioutil.ReadFile(path)
 	if readErr != nil {
 		// Try creating new file in case of read error (eg. file not found)
@@ -53,6 +53,6 @@ func UserHomePath() (path string) {
 }
 
 // Gets the full config filepath
-func ConfigFilepath() string {
-	return UserHomePath() + fmt.Sprintf("/%s", CFG_FILENAME)
+func configFilepath() string {
+	return UserHomePath() + fmt.Sprintf("/%s", ConfigFilename)
 }

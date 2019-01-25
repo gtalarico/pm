@@ -10,6 +10,10 @@ usage:
 	@bash -c "sed -ne 's/^##//p' ./Makefile | column -t -s ':' |  sed -e 's/^/ /'"
 
 # release: creates github release on gtalarico/pm and brew on gtalarico/homebrew-tap
+lint:
+	golangci-lint run ./...
+
+# release: creates github release on gtalarico/pm and brew on gtalarico/homebrew-tap
 release:
 	goreleaser release --rm-dist
 
