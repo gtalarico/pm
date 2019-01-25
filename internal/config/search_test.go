@@ -3,7 +3,7 @@ package config
 import "testing"
 
 func TestSearchProjects(t *testing.T) {
-	projects := []Project{
+	projects := []*Project{
 		{
 			Name: "project",
 			Path: "~",

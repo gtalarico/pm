@@ -33,7 +33,7 @@ func ConfirmPrompt(promptMsg string, default_ bool) bool {
 	return r
 }
 
-func PrintProjects(projects []config.Project) {
+func PrintProjects(projects []*config.Project) {
 	for _, project := range projects {
 		fmt.Println(project.Name)
 	}

@@ -20,7 +20,7 @@ func WriteConfig(config Config) (err error) {
 }
 
 func CreateConfig(path string) (cfg Config, err error) {
-	projects := []Project{}
+	projects := []*Project{}
 	cfg = Config{projects}
 	err = WriteConfig(cfg)
 	return

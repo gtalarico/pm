@@ -42,7 +42,7 @@ func CommandAdd(args []string, cfg config.Config) {
 	if err != nil {
 		cli.Abort(errors.Wrap(err, "invalid path"))
 	}
-	newProject := config.Project{
+	newProject := &config.Project{
 		Name: projectName,
 		Path: absPath,
 	}
@@ -64,7 +64,7 @@ func CommandAdd(args []string, cfg config.Config) {
 }
 
 func CommandRemove(args []string, cfg config.Config) {
-	var projectToKeep []config.Project
+	var projectToKeep []*config.Project
 	projectName := args[0]
 	matchedProject, err := config.GetOneProject(projectName, cfg)
 	if err != nil {
