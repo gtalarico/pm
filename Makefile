@@ -12,3 +12,8 @@ usage:
 # release: creates github release on gtalarico/pm and brew on gtalarico/homebrew-tap
 release:
 	goreleaser release --rm-dist
+
+# coverage: show test coverage
+coverage:
+	go test ./... -cover -race -coverprofile=coverage.out
+	go tool cover -func=coverage.out

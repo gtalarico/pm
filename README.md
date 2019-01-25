@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/gtalarico/pm.svg?style=svg)](https://circleci.com/gh/gtalarico/pm)
 
+[![Coverage Status](https://coveralls.io/repos/github/gtalarico/pm/badge.svg?branch=master)](https://coveralls.io/github/gtalarico/pm?branch=master)
+
 Minimal CLI Project Manager
 
 ---

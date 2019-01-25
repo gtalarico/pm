@@ -1,40 +1,91 @@
-# .circleci/config.yml
-# https://goreleaser.com/ci/
 version: 2
+
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.10
+    - image: circleci/golang:1.10
     working_directory: /go/src/github.com/gtalarico/pm
-    # directory where steps are run. Path must conform to the Go Workspace requirements
-    environment: # environment variables for the build itself
-      TEST_RESULTS: /tmp/test-results # path to where test results will be saved
     steps:
       - checkout
-      - run: mkdir -p $TEST_RESULTS # create the test results directory
+      - restore_cache:
+          keys:
+            - go-pkgs
+      - run: go get -t -v ./...
+      - save_cache:
+          key: go-pkgs
+          paths:
+            - /go/src/github.com/
+  test:
+    docker:
+    - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/gtalarico/pm
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-pkgs
+      - run: go get -t -v ./...
+      - run: go test ./...
 
-      # Dependencies
-      # Normally, this step would be in a custom primary image
-      - run: go get github.com/pkg/errors
+  lint:
+    docker:
+    - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/gtalarico/pm
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-pkgs
+      - run: go get -t -v ./...
 
-      # Run tests ...
-      - run:
-          name: Run test tests
-          command: go test ./... -v
-      # Release ...
-      # - run: curl -sL https://git.io/goreleaser | bash
-      # - run: curl -sL https://git.io/goreleaser | bash
-# workflows:
-#   version: 2
-#   release:
-#     jobs:
-#       - build:
-#         filters:
-#             branches:
-#               ignore: /.*/
-      # - release:
-      #     filters:
-      #       branches:
-      #         ignore: /.*/
-      #       tags:
-      #         only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      # Install Linter
+      - run: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v1.13.1
+      # https://github.com/golangci/golangci-lint/issues/250
+      - run: sudo cp ./bin/golangci-lint $GOPATH/bin/
+      - run: golangci-lint run ./...
+
+  coverage:
+    docker:
+    - image: circleci/golang:1.10
+    working_directory: /go/src/github.com/gtalarico/pm
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-pkgs
+      - run: go get -t -v ./...
+      - run: go get github.com/mattn/goveralls
+      - run: go test ./... -cover -race -coverprofile=coverage.out
+      - run: goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_TOKEN
+
+workflows:
+  version: 2
+  build-test-coverage-deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+              - build
+      - lint:
+          requires:
+              - test
+      - coverage:
+          requires:
+              - test
+#       # Release ...
+#       # - run: curl -sL https://git.io/goreleaser | bash
+#       # - run: curl -sL https://git.io/goreleaser | bash
+# # workflows:
+# #   version: 2
+# #   release:
+# #     jobs:
+# #       - build:
+# #         filters:
+# #             branches:
+# #               ignore: /.*/
+#       # - release:
+#       #     filters:
+#       #       branches:
+#       #         ignore: /.*/
+#       #       tags:
+#       #         only: /v[0-9]+(\.[0-9]+)*(-.*)*/
