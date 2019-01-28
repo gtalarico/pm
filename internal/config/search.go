@@ -40,7 +40,7 @@ func GetOneProject(query string, config Config) (project *Project, err error) {
 	}
 	if numProjects > 1 {
 		exactMatch := MatchProjects(query, config)
-		if exactMatch.Name == query {
+		if exactMatch != nil {
 			project = exactMatch
 		} else {
 			for _, project := range projects {

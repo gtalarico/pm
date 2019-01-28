@@ -1,4 +1,4 @@
 dist/
-
+coverage.out
 ### GoLand ###
 .idea/*
