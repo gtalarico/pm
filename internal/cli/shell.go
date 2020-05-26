@@ -3,7 +3,9 @@ package cli
 import (
 	"fmt"
 	"os"
+	"os/signal"
 	"os/user"
+	"syscall"
 
 	"github.com/pkg/errors"
 )
@@ -20,8 +22,11 @@ func Shell(cwd string) {
 	//technosophos.com/2014/07/11/start-an-interactive-shell-from-within-go.html
 	defer handleShellError()
 
+	// silent the ctrl+c / SIGTERM signals
+	SilentCtrlC()
+
 	fmt.Println("Starting new shell")
-	fmt.Println("Use 'CTRL + C' or '$ exit' to terminate child shell")
+	fmt.Println("Use 'exit' to terminate child shell")
 
 	// Get the current user.
 	me, err := user.Current()
@@ -57,4 +62,12 @@ func Shell(cwd string) {
 	// os.Setenv("PROMPT", "()")
 	// Keep on keepin' on.
 	fmt.Printf("Exited Go Sub Shell\n %s\n", state.String())
+}
+
+func SilentCtrlC() {
+	// listen to terminate signales
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	// and don't so anything
+	go func() { <-c }()
 }
