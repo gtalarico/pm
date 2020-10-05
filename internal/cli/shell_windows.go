@@ -15,8 +15,8 @@ import (
 // see getParentProcessPath
 // https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexa
 var (
-	modkernel32 = windows.NewLazySystemDLL("Psapi.dll")
-	syscallName = modkernel32.NewProc("GetModuleFileNameExA")
+	modpsapi32  = windows.NewLazySystemDLL("Psapi.dll")
+	syscallName = modpsapi32.NewProc("GetModuleFileNameExA")
 )
 
 func handleShellError() {
@@ -69,7 +69,7 @@ func getParentProcessPath() (path string, err error) {
 	// process results
 	res := uint32(r0)
 	if e1 != 0 || res == 0 {
-		return "", errors.New("Can not access parent process")
+		return "", errors.New("Can not get parent process executable path")
 	}
 
 	// remove all 0s from buffer
@@ -88,7 +88,7 @@ func getParentProcessPath() (path string, err error) {
 
 func Shell(cwd string) {
 	//technosophos.com/2014/07/11/start-an-interactive-shell-from-within-go.html
-	// defer handleShellError()
+	defer handleShellError()
 
 	// silent the ctrl+c / SIGTERM signals
 	silentCtrlC()
@@ -103,6 +103,7 @@ func Shell(cwd string) {
 	// Start up a new shell
 	shellPath, err := getParentProcessPath()
 	if err != nil {
+		fmt.Println("Can not determine active shell")
 		panic(err)
 	}
 	fmt.Printf("Starting new shell (%s)\n", shellPath)
