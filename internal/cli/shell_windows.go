@@ -13,6 +13,7 @@ import (
 
 // unsafe bindings to system dlls to find parent process path
 // see getParentProcessPath
+// https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getmodulefilenameexa
 var (
 	modkernel32 = windows.NewLazySystemDLL("Psapi.dll")
 	syscallName = modkernel32.NewProc("GetModuleFileNameExA")
