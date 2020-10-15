@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"runtime"
 
 	"github.com/pkg/errors"
 )
@@ -42,9 +43,14 @@ func ReadConfig() (cfg Config, err error) {
 	return
 }
 
-// Gets user home path using environment variable '$HOME'
+// Gets user home path using environment variable '$HOME' or '%HOMEPATH%'
 func UserHomePath() (path string) {
-	path = os.Getenv("HOME")
+	if runtime.GOOS == "windows" {
+		path = os.Getenv("HOMEPATH")
+	} else {
+		path = os.Getenv("HOME")
+	}
+
 	if path == "" {
 		err, _ := fmt.Printf("Could not get home directory")
 		panic(err)
